@@ -11,10 +11,10 @@ __pycache__/
 .ipynb_checkpoints/
 *.py[cod]
 
-# Local environment and secrets
-.venv/
-venv/
-.env
+# # Local environment and secrets
+# .venv/
+# venv/
+# .env
 
 # Ignore notebook checkpoints
 **/.ipynb_checkpoints/

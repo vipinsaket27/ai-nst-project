@@ -50,27 +50,28 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
-    content_transform = transforms.Compose([
-        transforms.Resize(512),
-        transforms.ToTensor()
-    ])
 
-    style_transform = transforms.Compose([
-        transforms.Resize(512),
-        transforms.ToTensor()
-    ])
+def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
+    # Limit the maximum image dimensions to reduce RAM usage
+    content_image.thumbnail((512, 512), Image.Resampling.LANCZOS)
+    style_image.thumbnail((512, 512), Image.Resampling.LANCZOS)
+
+    content_transform = transforms.ToTensor()
+    style_transform = transforms.ToTensor()
+
     content_image = content_transform(content_image).unsqueeze(0).to(device)
     style_image = style_transform(style_image).unsqueeze(0).to(device)
 
-    with torch.no_grad():
+    with torch.inference_mode():
         content_feats = encoder(content_image, is_test=True)
         style_feats = encoder(style_image, is_test=True)
 
-        stylized_feats = adaptive_instance_normalization(content_feats, style_feats)
-
-        stylized_feats = alpha * stylized_feats + (1 - alpha) * content_feats
-
+        stylized_feats = adaptive_instance_normalization(
+            content_feats, style_feats
+        )
+        stylized_feats = (
+            alpha * stylized_feats + (1 - alpha) * content_feats
+        )
         stylized_image = decoder(stylized_feats)
 
     return stylized_image
