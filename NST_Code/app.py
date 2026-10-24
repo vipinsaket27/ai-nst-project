@@ -53,8 +53,8 @@ def allowed_file(filename):
 
 def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
     # Limit the maximum image dimensions to reduce RAM usage
-    content_image.thumbnail((512, 512), Image.Resampling.LANCZOS)
-    style_image.thumbnail((512, 512), Image.Resampling.LANCZOS)
+    content_image.thumbnail((256, 256), Image.Resampling.LANCZOS)
+    style_image.thumbnail((256, 256), Image.Resampling.LANCZOS)
 
     content_transform = transforms.ToTensor()
     style_transform = transforms.ToTensor()
