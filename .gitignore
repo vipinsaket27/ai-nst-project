@@ -1,2 +1,20 @@
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
 
-vgg_normalised_corrupt_backup.pth
+# Ignore Python bytecode directories
+__pycache__/
+**/__pycache__/
+*.pyc
+# Python cache and notebook checkpoints
+__pycache__/
+.ipynb_checkpoints/
+*.py[cod]
+
+# Local environment and secrets
+.venv/
+venv/
+.env
+
+# Ignore notebook checkpoints
+**/.ipynb_checkpoints/
